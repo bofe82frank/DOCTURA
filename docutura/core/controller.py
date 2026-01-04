@@ -123,10 +123,10 @@ class ConversionController:
             # Complete metadata
             metadata.input_file_path = str(input_file)
             metadata.input_file_hash = self._compute_file_hash(input_file)
-            metadata.extraction_mode = options.mode.value
-            metadata.excel_layout_mode = options.excel_layout.value
-            metadata.word_orientation = options.word_orientation.value
-            metadata.output_formats = [fmt.value for fmt in options.output_formats]
+            metadata.extraction_mode = options.mode if isinstance(options.mode, str) else options.mode.value
+            metadata.excel_layout_mode = options.excel_layout if isinstance(options.excel_layout, str) else options.excel_layout.value
+            metadata.word_orientation = options.word_orientation if isinstance(options.word_orientation, str) else options.word_orientation.value
+            metadata.output_formats = [fmt if isinstance(fmt, str) else fmt.value for fmt in options.output_formats]
             metadata.theme = options.theme
 
             # Step 6: Validate tables
@@ -149,7 +149,7 @@ class ConversionController:
                 )
 
             # Update metadata with validation info
-            metadata.validation_status = validation_report.overall_status.value
+            metadata.validation_status = validation_report.overall_status if isinstance(validation_report.overall_status, str) else validation_report.overall_status.value
             metadata.validation_issues_count = len(validation_report.issues)
 
             # Step 7: Generate outputs
